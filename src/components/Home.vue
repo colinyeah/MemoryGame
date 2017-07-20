@@ -6,10 +6,10 @@
     margin-top: 50px;
     margin-bottom: 100px;
 }
-.header-btn{
+.start-btn{
     border-radius: 8px;
-    padding: 15px 35px;
-    font-size: 20px;
+    padding: 12px 30px;
+    font-size: 24px;
     background-color: #4fc08d;
     background-image: linear-gradient(to bottom,#7df1bd,#4fc08d);
     color: #ffffff;
@@ -21,6 +21,12 @@
     -ms-user-select:none;
     user-select:none;
 }
+.moves-count{
+    font-size: 24px;
+    float: right;
+    margin-top: 10px;
+    margin-right: 50px;
+}
 .card-block{
     display: inline-block;
     margin-right: 15px;
@@ -31,11 +37,12 @@
 <template>
     <div class="home">
        <div class="header">
-           <div class="header-btn" @click="replay">play</div>
+           <div class="start-btn" @click="replay">p l a y</div>
+           <div class="moves-count">Moves:{{moves}}</div>
        </div>
        <div v-for="(it1,index1) in row">
             <div v-for="(it2,index2) in column"  class="card-block" :cardId="index1*column+index2">
-                <Card :onClickCard="clickCard" :dataId="arrayList[index1*column+index2]" ref="jk"></Card>
+                <Card :onClickCard="clickCard" :dataId="arrayList[index1*column+index2]" ref="card"></Card>
             </div>
             <br>    
         </div>
@@ -58,6 +65,7 @@ export default {
       FirstCard:{},
       SecondCard:{},
       count:0,
+      moves:0,
 
       timeOut:null,
     }
@@ -65,13 +73,15 @@ export default {
   methods:{
     replay(){
         //重新开始玩
-        this.$refs.jk.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
+        this.$refs.card.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
         this.arrayList = this.shuffle();  //重新洗牌
         this.FirstCard = {};
         this.SecondCard = {};
         this.count = 0;
+        this.moves = 0;
     },
     clickCard(ref){
+        this.moves++; //记录次数
         this.count++;
         if(this.count===1){
             this.FirstCard = ref;
