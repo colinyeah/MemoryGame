@@ -8,7 +8,7 @@
     -webkit-transform-style: preserve-3d;
 }
 .flip .card-back{
-    z-index: 1
+    z-index: 1;
 }
 .flip .card-front{
     z-index: 2

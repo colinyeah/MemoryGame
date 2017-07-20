@@ -1,25 +1,41 @@
 <style scoped>
 .home{
-    margin-top: 150px;
     text-align: center;
+}
+.header{
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+.header-btn{
+    border-radius: 8px;
+    padding: 15px 35px;
+    font-size: 20px;
+    background-color: #4fc08d;
+    background-image: linear-gradient(to bottom,#7df1bd,#4fc08d);
+    color: #ffffff;
+    display: inline-block; 
+    cursor: pointer;
+
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .card-block{
     display: inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
+
 }
 </style>
 <template>
     <div class="home">
-        <!-- <div v-for="(it1,index1) in row">
-            <div v-for="(it2,index2) in column"  class="card-block">
-                <Card :onClickCard="clickCard" :cardId="(index1*column)+(index2+1)"></Card>
-            </div>
-            <br>    
-        </div> -->
+       <div class="header">
+           <div class="header-btn" @click="replay">play</div>
+       </div>
        <div v-for="(it1,index1) in row">
             <div v-for="(it2,index2) in column"  class="card-block" :cardId="index1*column+index2">
-                <Card :onClickCard="clickCard" :dataId="arrayList[index1*column+index2]"></Card>
+                <Card :onClickCard="clickCard" :dataId="arrayList[index1*column+index2]" ref="jk"></Card>
             </div>
             <br>    
         </div>
@@ -32,10 +48,10 @@ export default {
   components:{
      Card
   },
-  name: 'hello',
+  name: 'home',
   data () {
     return {
-      row:3,
+      row:4,
       column:4,
       arrayList:[],
 
@@ -47,6 +63,14 @@ export default {
     }
   },
   methods:{
+    replay(){
+        //重新开始玩
+        this.$refs.jk.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
+        this.arrayList = this.shuffle();  //重新洗牌
+        this.FirstCard = {};
+        this.SecondCard = {};
+        this.count = 0;
+    },
     clickCard(ref){
         this.count++;
         if(this.count===1){
