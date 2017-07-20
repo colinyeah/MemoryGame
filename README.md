@@ -1,14 +1,14 @@
-# y
+# MemoryGame(记忆游戏)
 
-> A Vue.js project
+> A MemoryGame build by Vue.js
 
-## Build Setup
+## How to run
 
 ``` bash
-# install dependencies
+# install dependencies(安装依赖)
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:8080(在本地8080端口运行)
 npm run dev
 
 # build for production with minification
@@ -26,5 +26,3 @@ npm run e2e
 # run all tests
 npm test
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
