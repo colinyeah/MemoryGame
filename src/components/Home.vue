@@ -6,6 +6,12 @@
     margin-top: 50px;
     margin-bottom: 100px;
 }
+.header .time-count{
+    float: left;
+    font-size: 24px;
+    margin-top: 10px;
+    margin-left: 50px;
+}
 .default-btn{
     border-radius: 8px;
     padding: 12px 30px;
@@ -41,9 +47,9 @@
     height: 300px;
     background: #fff;
     margin: 0 auto;
-    top: -500px;
+    top: -600px;
     position: relative;
-    border: 16px groove #7df1bd;
+    border: 16px ridge #7df1bd;
     border-radius: 10px;
     text-align: center;
     padding: 30px;
@@ -52,7 +58,7 @@
     font-size: 36px;
     font-style: italic;
     font-weight: 700;
-
+    margin-top: 36px;
 }
 .des{
     font-size: 28px;
@@ -67,6 +73,7 @@
 <template>
     <div class="home">
        <div class="header">
+           <Timecount label="Time" ref="timecount"></Timecount>
            <div class="start-btn default-btn" @click="replay">p l a y</div>
            <div class="moves-count">Moves:{{moves}}</div>
        </div>
@@ -79,7 +86,7 @@
        <div class="board" v-if="showModal">
            <div class="board-title">congratulation!</div>
            <p class="des">your score:</p>
-           <p class="score-des">Moves:{{moves}}</p>
+           <p class="score-des">Moves:{{moves}}&nbsp;&nbsp;Time:{{times}}</p>
            <div class="default-btn" @click="hideModal">O K</div>
        </div>
     </div>
@@ -87,9 +94,10 @@
 
 <script>
 import Card from './Card'
+import Timecount from './Timecount'
 export default {
   components:{
-     Card
+     Card,Timecount
   },
   name: 'home',
   data () {
@@ -102,22 +110,29 @@ export default {
       SecondCard:{},
       count:0,
       moves:0,
+      times:'00:00',
       flipCount:0,
 
       timeOut:null,
 
-      showModal:true,
+      showModal:false,
     }
   },
   methods:{
     replay(){
         //重新开始玩
+        this.reset();
+        this.$refs.timecount.startCount();
+    },
+    reset(){
+        //重置所有值
         this.$refs.card.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
         this.arrayList = this.shuffle();  //重新洗牌
         this.FirstCard = {};
         this.SecondCard = {};
         this.count = 0;
         this.moves = 0;
+        this.times = '00:00';
         this.flipCount = 0;
     },
     clickCard(ref){
@@ -167,6 +182,8 @@ export default {
         //检查是否全部翻到正面，如果是则提示通过游戏
         let total = this.row * this.column;
         if(total===this.flipCount){
+            this.$refs.timecount.stopCount();
+            this.times = this.$refs.timecount.timeStr;
             this.showModal = true;
         }
     },
