@@ -48,7 +48,7 @@ export default {
     },
     stopCount (){
       //停止计时
-      clearInterval(this.timer)
+      clearInterval(this.timer);
     }
 
   },

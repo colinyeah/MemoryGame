@@ -60,6 +60,10 @@ export default {
     },
     dataId:{
         default:0
+    },
+    isStart:{
+      type:Boolean,
+      default:false
     }
   },
   data () {
@@ -84,6 +88,10 @@ export default {
   methods:{
     clickCard(){
         //点击牌操作
+        if(!this.isStart){
+          //未开始不能点击
+          return;
+        }
         if(!this.isFlip){
             this.onClickCard(this);
             this.flip();

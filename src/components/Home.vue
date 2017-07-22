@@ -79,7 +79,7 @@
        </div>
        <div v-for="(it1,index1) in row">
             <div v-for="(it2,index2) in column"  class="card-block" :cardId="index1*column+index2">
-                <Card :onClickCard="clickCard" :dataId="arrayList[index1*column+index2]" ref="card"></Card>
+                <Card :onClickCard="clickCard" :isStart="isStart" :dataId="arrayList[index1*column+index2]" ref="card"></Card>
             </div>
             <br>    
        </div>
@@ -116,11 +116,13 @@ export default {
       timeOut:null,
 
       showModal:false,
+      isStart:false,
     }
   },
   methods:{
     replay(){
         //重新开始玩
+        this.isStart = true;
         this.reset();
         this.$refs.timecount.startCount();
     },
@@ -150,7 +152,7 @@ export default {
                     this.FirstCard = {};
                     this.SecondCard = {};
                     this.count = 0;
-                    
+
                 },800);
                 
             }else{
@@ -215,12 +217,29 @@ export default {
     hideModal(){
         //关闭弹框
         this.showModal = false;
+    },
+    auto_flip(time){
+        //开始前的自动翻转动画
+        setTimeout(()=>{
+            if(this.isStart){
+                //如果已经开始游戏了则不再自动翻牌
+                return;
+            }
+            let r_index = this.randomNum(1,this.row*this.column);
+            this.$refs.card[r_index-1].flip();
+            let r_time = this.randomNum(500,1000);
+            this.auto_flip(r_time);
+        },time);
+    },
+    randomNum(start,end){
+        //随机选取一个数
+        return Math.floor((Math.random()*(end-start+1))+start);
     }
-
   },
   mounted(){
     //重新打乱序列
     this.arrayList = this.shuffle();
+    this.auto_flip();
   }
 
 }
