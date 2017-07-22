@@ -106,6 +106,7 @@ export default {
   watch: {
     dataId(newVal,oldVal){
         //在dataId改变的时候改变background的图片
+        console.log("1212");
         let index = this.dataId;
         let imgUrl = this.pic[index-1];
         this.$refs.cardFace.style.backgroundImage = 'url('+imgUrl+')';

@@ -69,12 +69,33 @@
     margin: 20px;
     font-style: italic;
 }
+.level-select{
+    border-radius: 8px;
+    padding: 12px 30px;
+    font-size: 24px;
+    background-color: #4fc08d;
+    background-image: linear-gradient(to bottom,#7df1bd,#4fc08d);
+    color: #ffffff;
+    display: inline-block; 
+    cursor: pointer;
+    outline: none;
+
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
 </style>
 <template>
     <div class="home">
        <div class="header">
            <Timecount label="Time" ref="timecount"></Timecount>
            <div class="start-btn default-btn" @click="replay">p l a y</div>
+           <select class="level-select" @change="selectLevel">
+               <option value="1">easy</option>
+               <option value="2">normal</option>
+               <option value="3">difficult</option>
+           </select>
            <div class="moves-count">Moves:{{moves}}</div>
        </div>
        <div v-for="(it1,index1) in row">
@@ -102,7 +123,7 @@ export default {
   name: 'home',
   data () {
     return {
-      row:4,
+      row:3,
       column:4,
       arrayList:[],
 
@@ -129,6 +150,7 @@ export default {
     reset(){
         //重置所有值
         this.$refs.card.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
+        this.arrayList = [];
         this.arrayList = this.shuffle();  //重新洗牌
         this.FirstCard = {};
         this.SecondCard = {};
@@ -136,6 +158,27 @@ export default {
         this.moves = 0;
         this.times = '00:00';
         this.flipCount = 0;
+    },
+    selectLevel(e){
+        //选择难度
+        console.log(e.target.value);
+        let level = parseInt(e.target.value);
+        if(level === 1){
+            //难度easy，3x4
+            this.row = 3;
+            this.column = 4;
+            this.reset();
+        }else if(level === 2){
+            //难度normal，4x4
+            this.row = 4;
+            this.column = 4;
+            this.reset();
+        }else if(level === 3){
+            //难度difficult，6x4
+            this.row = 4;
+            this.column = 6;
+            this.reset();
+        }
     },
     clickCard(ref){
         this.moves++; //记录次数
@@ -226,7 +269,9 @@ export default {
                 return;
             }
             let r_index = this.randomNum(1,this.row*this.column);
-            this.$refs.card[r_index-1].flip();
+            if(this.$refs.card[r_index-1]){
+                this.$refs.card[r_index-1].flip();
+            } 
             let r_time = this.randomNum(500,1000);
             this.auto_flip(r_time);
         },time);
