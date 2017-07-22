@@ -150,6 +150,7 @@ export default {
                     this.FirstCard = {};
                     this.SecondCard = {};
                     this.count = 0;
+                    
                 },800);
                 
             }else{
