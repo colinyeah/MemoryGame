@@ -61,6 +61,9 @@ export default {
     dataId:{
         default:0
     },
+    level:{
+        default:-1
+    },
     isStart:{
       type:Boolean,
       default:false
@@ -106,11 +109,18 @@ export default {
   watch: {
     dataId(newVal,oldVal){
         //在dataId改变的时候改变background的图片
-        console.log("1212");
+        console.log("变了");
         let index = this.dataId;
         let imgUrl = this.pic[index-1];
         this.$refs.cardFace.style.backgroundImage = 'url('+imgUrl+')';
     }
+
+  },
+  mounted(){
+    //挂载上来就设置background
+    let index = this.dataId;
+    let imgUrl = this.pic[index-1];
+    this.$refs.cardFace.style.backgroundImage = 'url('+imgUrl+')';
   }
 
 }

@@ -98,12 +98,15 @@
            </select>
            <div class="moves-count">Moves:{{moves}}</div>
        </div>
+
+
        <div v-for="(it1,index1) in row">
             <div v-for="(it2,index2) in column"  class="card-block" :cardId="index1*column+index2">
                 <Card :onClickCard="clickCard" :isStart="isStart" :dataId="arrayList[index1*column+index2]" ref="card"></Card>
             </div>
             <br>    
        </div>
+
        <div class="board" v-if="showModal">
            <div class="board-title">congratulation!</div>
            <p class="des">your score:</p>
@@ -126,6 +129,7 @@ export default {
       row:3,
       column:4,
       arrayList:[],
+      gameLevel:1,
 
       FirstCard:{},
       SecondCard:{},
@@ -150,8 +154,8 @@ export default {
     reset(){
         //重置所有值
         this.$refs.card.map((item)=>{item.isFlip = false}); //卡片全部翻回背面
-        this.arrayList = [];
-        this.arrayList = this.shuffle();  //重新洗牌
+        // this.arrayList = [].concat([]);
+        this.arrayList = [].concat(this.shuffle());  //重新洗牌
         this.FirstCard = {};
         this.SecondCard = {};
         this.count = 0;
@@ -161,8 +165,10 @@ export default {
     },
     selectLevel(e){
         //选择难度
-        console.log(e.target.value);
+        this.row = 0;
+        this.column = 0;
         let level = parseInt(e.target.value);
+        this.gameLevel = level;
         if(level === 1){
             //难度easy，3x4
             this.row = 3;
@@ -254,7 +260,7 @@ export default {
         arr.sort((a,b)=>{
             return 0.5-Math.random();
         });
-        console.log(arr);
+        console.log('shuffle',arr);
         return arr;
     },
     hideModal(){
